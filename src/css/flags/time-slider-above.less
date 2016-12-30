@@ -302,30 +302,17 @@
     }
 
     .jw-tooltip-time {
-      bottom: @slider-fixed-height + 5px;
-      height: auto;
-      line-height: normal;
-      padding: 0;
-      pointer-events: none;
-      transform: translateX(-50%);
-
       .jw-overlay {
-        bottom: auto;
-        left: auto;
-        position: static;
+        bottom: 2.5em;
+        
+        &:after {
+          content: none;
+        }
       }
 
       .jw-time-tip {
-        border-radius: @ui-corner-round;
-        left: auto;
-        padding: 1px 5px;
-        position: static;
+        bottom: 0;
       }
-
-      .jw-text {
-        height: auto;
-      }
-
     }
 
 
