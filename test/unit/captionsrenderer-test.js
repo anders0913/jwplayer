@@ -1,19 +1,13 @@
-define([
-    'test/underscore',
-    'controller/model',
-    'view/captionsrenderer',
-    'parsers/captions/vttcue'
-], function (_, Model, CaptionsRenderer, VTTCue) {
-    /* jshint maxlen: 1000, qunit: true */
+import Model from 'controller/model';
+import CaptionsRenderer from 'view/captionsrenderer';
+import VTTCue from 'parsers/captions/vttcue';
 
-    var test = QUnit.test.bind(QUnit);
+var captionsRenderer = new CaptionsRenderer(new Model());
+captionsRenderer.setup();
 
-    var captionsRenderer = new CaptionsRenderer(new Model());
-    captionsRenderer.setup();
-    
-    QUnit.module('CaptionsRenderer.getCurrentCues');
+describe('CaptionsRenderer.getCurrentCues', function() {
 
-    test('should show the correct number of cues at any given position in time', function (assert) {
+    it('should show the correct number of cues at any given position in time', function() {
         var allCues = [
             new VTTCue(0, 3, 'HG: Morning, Rob.'),
             new VTTCue(4, 5, 'How are you?'),
@@ -31,22 +25,24 @@ define([
         }
     });
 
-    QUnit.module('CaptionsRenderer.updateCurrentCues');
+    describe('CaptionsRenderer.updateCurrentCues', function() {
 
-    test('should set current cues ', function (assert) {
-        var cues = [
-            new VTTCue(0, 3, 'HG: Morning, Rob.')
-        ];
-        assert.equal(captionsRenderer.updateCurrentCues(cues).length, 1, '');
+        it('should set current cues ', function() {
+            var cues = [
+                new VTTCue(0, 3, 'HG: Morning, Rob.')
+            ];
+            assert.equal(captionsRenderer.updateCurrentCues(cues).length, 1, '');
 
-        cues = [
-            new VTTCue(12, 15, 'EG: Hey, Jo...'),
-            new VTTCue(13, 14, 'JB: Yeah?'),
-            new VTTCue(13, 14, 'JP: Yeah?')
-        ];
-        assert.equal(captionsRenderer.updateCurrentCues(cues).length, 3, '');
+            cues = [
+                new VTTCue(12, 15, 'EG: Hey, Jo...'),
+                new VTTCue(13, 14, 'JB: Yeah?'),
+                new VTTCue(13, 14, 'JP: Yeah?')
+            ];
+            assert.equal(captionsRenderer.updateCurrentCues(cues).length, 3, '');
 
-        cues = [];
-        assert.equal(captionsRenderer.updateCurrentCues(cues).length, 0, '');
+            cues = [];
+            assert.equal(captionsRenderer.updateCurrentCues(cues).length, 0, '');
+        });
     });
 });
+

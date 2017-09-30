@@ -1,13 +1,10 @@
-define([
-    'utils/stream-type'
-], function (streamTypeUtil) {
-    /* jshint qunit: true */
-    QUnit.module('stream-type');
-    var test = QUnit.test.bind(QUnit)
+import * as streamTypeUtil from 'providers/utils/stream-type';
 
-    test('stream-type.streamType', function(assert) {
-        var minDvrWindow = 120;
-        var type = streamTypeUtil.streamType(0, minDvrWindow);
+describe('stream-type', function() {
+
+    it('stream-type.streamType', function() {
+        const minDvrWindow = 120;
+        let type = streamTypeUtil.streamType(0, minDvrWindow);
         assert.equal(type, 'VOD', 'streamType with 0 and 120');
 
         type = streamTypeUtil.streamType(0, 0);
@@ -46,4 +43,4 @@ define([
         type = streamTypeUtil.streamType(-20, undefined);
         assert.equal(type, 'LIVE', 'streamType with -20 and undefined');
     });
-})
+});

@@ -1,10 +1,6 @@
-define([
-    'utils/parser'
-], function (parser) {
-    /* jshint qunit: true */
+import * as parser from 'utils/parser';
 
-    QUnit.module('parser');
-    var test = QUnit.test.bind(QUnit);
+describe('parser', function() {
 
     var testerGenerator = function (assert, method) {
         return function (left, right, message) {
@@ -12,24 +8,24 @@ define([
         };
     };
 
-    test('parser.getAbsolutePath', function(assert) {
+    it('parser.getAbsolutePath', function() {
         var path = parser.getAbsolutePath(null, null);
-        assert.notOk(path, 'passing null as path returns null');
+        assert.isNotOk(path, 'passing null as path returns null');
 
         path = parser.getAbsolutePath('https://testingUrl', null);
         assert.equal(path, 'https://testingUrl', 'passing absolute path returns the path');
 
         path = parser.getAbsolutePath('path', 'base');
-        assert.ok(path.indexOf('path') >= 0, 'passing path and base returns correct url with path');
-        assert.ok(path.indexOf('base') >= 0, 'passing path and base returns correct url with base');
+        assert.isOk(path.indexOf('path') >= 0, 'passing path and base returns correct url with path');
+        assert.isOk(path.indexOf('base') >= 0, 'passing path and base returns correct url with base');
 
         var test = testerGenerator(assert, parser.getAbsolutePath);
-        test(['.',   'https://example.com/alpha/beta/filename'], 'https://example.com/alpha/beta');
-        test(['/',   'https://example.com/alpha/beta/filename'], 'https://example.com/');
+        test(['.', 'https://example.com/alpha/beta/filename'], 'https://example.com/alpha/beta');
+        test(['/', 'https://example.com/alpha/beta/filename'], 'https://example.com/');
         test(['../', 'https://example.com/alpha/beta/filename'], 'https://example.com/alpha');
 
         test(['./hello/', 'https://example.com/'], 'https://example.com/hello', 'Testing with adding a directory');
-        test(['/',   'https://example.com/alpha/beta/filename?x=1&y=2'], 'https://example.com/',
+        test(['/', 'https://example.com/alpha/beta/filename?x=1&y=2'], 'https://example.com/',
             'Testing with GET arguments');
         test(['../../../../../', 'https://example.com/'], 'https://example.com/', 'Testing with extraneous ../');
 
@@ -37,7 +33,7 @@ define([
         test(['../hello.mp4', 'https://example.com/hi.html'], 'https://example.com/hello.mp4');
     });
 
-    test('parser.serialize', function (assert) {
+    it('parser.serialize', function() {
         var array = [];
         var object = {};
 
@@ -59,25 +55,16 @@ define([
         test(['100%'], '100%', 'percentage values are not changed');
     });
 
-    test('parser.getScriptPath', function(assert) {
-        var path = parser.getScriptPath(null);
-        assert.equal(path, '', 'returns an empty string when no file name is provided');
-
-        var scriptPath = parser.getScriptPath('parser-test.js');
-        assert.ok(/\S+\:\/\/.+\/$/.test(scriptPath),
-            'returns a directory url ending with a forward slash "'+ scriptPath +'"');
-    });
-
-    test('parser.parseXML', function(assert) {
+    it('parser.parseXML', function() {
         var xml = parser.parseXML('<input>');
-        assert.notOk(xml);
+        assert.isNotOk(xml);
         //
         var input = '<input><test>ToTest</test></input>';
         xml = parser.parseXML(input);
-        assert.ok(xml, 'xml should be returned');
+        assert.isOk(xml, 'xml should be returned');
     });
 
-    test('parser.parseDimension', function(assert) {
+    it('parser.parseDimension', function() {
         var dimension = parser.parseDimension('');
         assert.equal(dimension, 0, 'dimension with empty string should be 0');
 
@@ -91,7 +78,7 @@ define([
         assert.equal(dimension, 35, 'dimension with int should be itself');
     });
 
-    test('parser.timeFormat', function(assert) {
+    it('parser.timeFormat', function() {
         var time;
 
         time = parser.timeFormat(3661);
